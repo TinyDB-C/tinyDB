@@ -1,20 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdint.h>
-
-typedef uint64_t pgnum;
-typedef unsigned char byte;
-
-typedef struct {
-  pgnum num;
-  byte *data;
-  size_t dataSize;
-} page;
-
-typedef struct {
-  FILE *file;
-  int pageSize;
-} dal;
+#include "dal.h"
 
 dal* newDal(const char* path, int pageSize){
   dal *database = (dal*)malloc(sizeof(dal));
