@@ -8,14 +8,14 @@ typedef uint64_t pgnum;
 typedef unsigned char byte;
 
 typedef struct {
-  pgnum num;
-  byte *data;
-  size_t dataSize;
+    pgnum num;
+    byte *data;
+    size_t dataSize;
 } page;
 
 typedef struct {
-  FILE *file;
-  int pageSize;
+    FILE *file;
+    int pageSize;
 } dal;
 
 dal* newDal(const char* path, int pageSize);
