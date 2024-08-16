@@ -5,7 +5,7 @@
 #include <stddef.h>
 
 // Define the magic number used for database file identification
-#define MAGIC_NUMBER 0xD00DB00D
+#define MAGIC_NUMBER 0x74696e79  // 'HEX code of tiny'
 
 // Type definition for page numbers using a 64-bit unsigned integer
 typedef uint64_t pgnum;

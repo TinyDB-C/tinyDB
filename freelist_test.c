@@ -14,10 +14,18 @@ int main() {
 }
 
 void testSerializationDeserialization() {
-    // Create a new freelist and add some pages
+    // Create a new freelist
     freelist* original = newFreelist();
-    for (pgnum i = 1; i <= 10; ++i) {
-        releasePage(original, i);
+
+    // Allocate 10 pages
+    pgnum allocatedPages[10];
+    for (pgnum i = 0; i < 10; ++i) {
+        allocatedPages[i] = getNextPage(original); // Allocate pages
+    }
+
+    // Release only 4 of the allocated pages
+    for (pgnum i = 0; i < 4; ++i) {
+        releasePage(original, allocatedPages[i]); // Release 4 pages
     }
 
     // Print the original freelist
