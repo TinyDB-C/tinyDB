@@ -118,6 +118,7 @@
 #include <errno.h>
 #include "dal.h"
 #include "node.h"
+#include "meta.h"
 
 // Default options for the Disk Abstraction Layer (DAL)
 const Options DefaultOptions = {
@@ -150,11 +151,11 @@ dal* newDal(const char* path, Options* options) {
                 return NULL;
             }
 
-            // Initialize freelist and meta information
+            // Initialize freelist and Meta information
             d->freelist = newFreelist();
-            d->meta = (meta*)malloc(sizeof(meta));
+            d->meta = (Meta*)malloc(sizeof(Meta));
             if (!d->meta) {
-                perror("Failed to allocate memory for meta");
+                perror("Failed to allocate memory for Meta");
                 fclose(d->file);
                 freeFreelist(d->freelist);
                 free(d);
@@ -184,7 +185,7 @@ dal* newDal(const char* path, Options* options) {
             }
             d->meta->root = writtenNode->page_num;
 
-            // Write meta information to the file
+            // Write Meta information to the file
             if (!writeMeta(d, d->meta)) {
                 fclose(d->file);
                 freeFreelist(d->freelist);
@@ -198,7 +199,7 @@ dal* newDal(const char* path, Options* options) {
             return NULL;
         }
     } else {
-        // File exists, read meta and freelist information
+        // File exists, read Meta and freelist information
         d->meta = readMeta(d);
         if (!d->meta) {
             fclose(d->file);
@@ -376,33 +377,33 @@ void deleteNode(dal* d, pgnum page_num) {
     releasePage(d->freelist, page_num);
 }
 
-// Read meta information from the meta page
-meta* readMeta(dal* d) {
-    page* p = readPage(d, metaPage); // Read meta page
+// Read Meta information from the Meta page
+Meta* readMeta(dal* d) {
+    page* p = readPage(d, metaPage); // Read Meta page
     if (!p) return NULL;
 
-    meta* m = (meta*)malloc(sizeof(meta)); // Allocate memory for meta
+    Meta* m = (Meta*)malloc(sizeof(Meta)); // Allocate memory for Meta
     if (!m) {
-        perror("Failed to allocate memory for meta");
+        perror("Failed to allocate memory for Meta");
         free(p->data);
         free(p);
         return NULL;
     }
 
-    memcpy(m, p->data, sizeof(meta)); // Copy meta data from page
+    memcpy(m, p->data, sizeof(Meta)); // Copy Meta data from page
 
     free(p->data);
     free(p);
     return m;
 }
 
-// Write meta information to the meta page
-page* writeMeta(dal* d, meta* meta) {
+// Write Meta information to the Meta page
+page* writeMeta(dal* d, Meta* Meta) {
     page* p = allocateEmptyPage(d); // Allocate memory for page
     if (!p) return NULL;
 
     p->num = metaPage;
-    memcpy(p->data, meta, sizeof(meta)); // Copy meta data to page
+    memcpy(p->data, Meta, sizeof(Meta)); // Copy Meta data to page
 
     if (writePage(d, p) != 0) {
         free(p->data);

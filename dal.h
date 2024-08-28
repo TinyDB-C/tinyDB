@@ -41,6 +41,7 @@
 #include <stdbool.h>
 #include "freelist.h"
 #include "node2.h"
+#include "meta.h"
 
 typedef uint64_t pgnum;
 
@@ -57,17 +58,13 @@ typedef struct {
     uint8_t* data;
 } page;
 
-typedef struct {
-    pgnum root;
-    pgnum freelistPage;
-} meta;
 
 typedef struct {
     int pageSize;
     float minFillPercent;
     float maxFillPercent;
     FILE* file;
-    meta* meta;
+    Meta* meta;
     freelist* freelist;
 } dal;
 
@@ -83,7 +80,7 @@ int writePage(dal* d, page* p);
 Node* getNode(dal* d, pgnum pageNum);
 Node* writeNode(dal* d, Node* n);
 void deleteNode(dal* d, pgnum pageNum);
-meta* readMeta(dal* d);
-page* writeMeta(dal* d, meta* meta);
+Meta* readMeta(dal* d);
+page* writeMeta(dal* d, Meta* meta);
 
 #endif // DAL_H
