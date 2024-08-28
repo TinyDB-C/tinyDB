@@ -6,6 +6,9 @@
 // Type definition for page numbers
 typedef unsigned int pgnum;
 
+
+const pgnum metaPage = 0;
+
 // Structure representing the freelist
 typedef struct freelist {
     pgnum maxPage; // The maximum page number allocated so far

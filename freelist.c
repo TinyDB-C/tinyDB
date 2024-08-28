@@ -3,8 +3,6 @@
 #include <string.h>
 #include "freelist.h"
 
-const pgnum metaPage = 0;
-
 // Creates a new freelist and initializes it
 freelist* newFreelist() {
     freelist* fr = (freelist*)malloc(sizeof(freelist)); // Allocate memory for the freelist
